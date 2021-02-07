@@ -44,7 +44,7 @@ toolbox.register("mutate", tools.mutShuffleIndexes, indpb=1./len(tsp))
 def main():
     population = toolbox.populationCreator(n=POPULATION)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("MAX", np.max)
+    stats.register("MIN", np.min)
     stats.register("MEAN", np.mean)
     hof = tools.HallOfFame(HALL_OF_FAME_NUMBER)
 
@@ -56,7 +56,7 @@ def main():
                                               mutpb=P_MUTATION,
                                               cxpb=P_CROSSOVER,
                                               verbose=True,)
-    maxFitnessValues, meanFitnessValues = logbook.select("MAX", "MEAN")
+    maxFitnessValues, meanFitnessValues = logbook.select("MIN", "MEAN")
     sns.set_style("whitegrid")
     plt.plot(maxFitnessValues, color='red')
     plt.plot(meanFitnessValues, color='green')

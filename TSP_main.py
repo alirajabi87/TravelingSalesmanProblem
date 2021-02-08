@@ -4,17 +4,17 @@ import array, random
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from eaSimple_withElitism import eaSimpleWithElitism
 
 TSP_NAME = "bayg29"
 tsp = TSP(TSP_NAME)
 
 # Genetic Constants
-MAX_GENERATION = 300
-POPULATION = 300
+MAX_GENERATION = 250
+POPULATION = 500
 P_CROSSOVER = 0.9
 P_MUTATION = 0.1
-HALL_OF_FAME_NUMBER = 5
-
+HALL_OF_FAME_NUMBER = 30
 
 # Define the fitness strategy
 creator.create("FitnessMin", base.Fitness, weights=(-1.,))
@@ -33,13 +33,15 @@ toolbox.register("populationCreator", tools.initRepeat, list, toolbox.Individual
 def tspDistance(individual):
     return (tsp.getTotalDistance(individual),)
 
+
 toolbox.register("evaluate", tspDistance)
 
 # register three genetic operators : Select, mate, mutate
 
-toolbox.register("select", tools.selTournament, tournsize=3)
+toolbox.register("select", tools.selTournament, tournsize=2)
 toolbox.register("mate", tools.cxOrdered)
-toolbox.register("mutate", tools.mutShuffleIndexes, indpb=1./len(tsp))
+toolbox.register("mutate", tools.mutShuffleIndexes, indpb=1. / len(tsp))
+
 
 def main():
     population = toolbox.populationCreator(n=POPULATION)
@@ -48,14 +50,15 @@ def main():
     stats.register("MEAN", np.mean)
     hof = tools.HallOfFame(HALL_OF_FAME_NUMBER)
 
-    population, logbook = algorithms.eaSimple(population=population,
-                                              stats=stats,
+    population, logbook = eaSimpleWithElitism(population=population,
                                               toolbox=toolbox,
-                                              halloffame=hof,
-                                              ngen=MAX_GENERATION,
-                                              mutpb=P_MUTATION,
                                               cxpb=P_CROSSOVER,
-                                              verbose=True,)
+                                              mutpb=P_MUTATION,
+                                              ngen=MAX_GENERATION,
+                                              halloffame=hof,
+                                              stats=stats,
+                                              verbose=True)
+
     maxFitnessValues, meanFitnessValues = logbook.select("MIN", "MEAN")
     sns.set_style("whitegrid")
     plt.plot(maxFitnessValues, color='red')
@@ -63,7 +66,7 @@ def main():
     plt.title("Traveling Salesman Problem")
     plt.ylabel("Max/Mean Values")
     plt.xlabel("Generations")
-    plt.legend(["MAX", "MEAN"])
+    plt.legend(["MIN", "MEAN"])
     plt.show()
 
     print(f"--Best ever individual: {hof.items[0]}")
@@ -74,4 +77,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

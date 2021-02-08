@@ -74,12 +74,12 @@ def eaSimpleWithElitism(population, toolbox, cxpb, mutpb, ngen, stats=None, hall
 
         # if current_mean - logbook.select("MEAN")[gen] < 0:
         #     temp = np.random.random()
-        #     mutpb = temp if temp < 0.2 else 0.15
-        #     toolbox.register("select", tools.selTournament, tournsize=2)
+        #     mutpb = temp if temp < 0.3 else 0.15
+        #     toolbox.register("select", tools.selTournament, tournsize=4)
         #     # print(f"The Minimum is {logbook.select('MEAN')[gen]} and previous Min is {current_mean}, mutpb is: {mutpb}")
         # else:
         #     current_mean = logbook.select("MEAN")[gen]
-        #     toolbox.register("select", tools.selTournament, tournsize=3)
+        #     toolbox.register("select", tools.selTournament, tournsize=2)
         #     # print(f"Return to previous settings")
         #     mutpb = 0.1
 

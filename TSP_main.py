@@ -14,7 +14,7 @@ MAX_GENERATION = 250
 POPULATION = 500
 P_CROSSOVER = 0.9
 P_MUTATION = 0.1
-HALL_OF_FAME_NUMBER = 30
+HALL_OF_FAME_NUMBER = 50
 
 # Define the fitness strategy
 creator.create("FitnessMin", base.Fitness, weights=(-1.,))
